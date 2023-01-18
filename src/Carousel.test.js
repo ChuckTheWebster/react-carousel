@@ -30,9 +30,9 @@ it("works when you click on the right arrow", function() {
   ).toBeInTheDocument();
 });
 
-//TODO: Write failing left arrow test
+// TESTS BUG 2 -- Write failing left arrow test
 it("works when you click on the left arrow", function() {
-  const { container } = render(
+  const { container, debug } = render(
     <Carousel
       photos={TEST_IMAGES}
       title="images for testing"
@@ -49,13 +49,49 @@ it("works when you click on the left arrow", function() {
   // move forward in the carousel
   const leftArrow = container.querySelector(".bi-arrow-left-circle");
   fireEvent.click(leftArrow);
-
+  // debug(container);
   // expect the second image to show, but not the first
   expect(
     container.querySelector('img[alt="testing image 1"]')
   ).not.toBeInTheDocument();
   expect(
     container.querySelector('img[alt="testing image 3"]')
+  ).toBeInTheDocument();
+});
+
+
+// TESTS BUG 1 -- Write failing left arrow test
+it("works when you click on the right arrow on last photo", function() {
+  const { container } = render(
+    <Carousel
+      photos={TEST_IMAGES}
+      title="images for testing"
+    />
+  );
+
+  // TODO: is there a way to modify useState to start at last image upon first render
+  // simulate scrolling to the last image
+  const rightArrow = container.querySelector(".bi-arrow-right-circle");
+  fireEvent.click(rightArrow);
+  fireEvent.click(rightArrow);
+
+  // expect the first image to show, but not the second
+  expect(
+    container.querySelector('img[alt="testing image 3"]')
+  ).toBeInTheDocument();
+  expect(
+    container.querySelector('img[alt="testing image 1"]')
+  ).not.toBeInTheDocument();
+
+  // move forward in the carousel
+  fireEvent.click(rightArrow);
+
+  // expect the second image to show, but not the first
+  expect(
+    container.querySelector('img[alt="testing image 3"]')
+  ).not.toBeInTheDocument();
+  expect(
+    container.querySelector('img[alt="testing image 1"]')
   ).toBeInTheDocument();
 });
 

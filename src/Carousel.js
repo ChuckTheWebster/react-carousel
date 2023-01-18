@@ -22,8 +22,20 @@ import Card from "./Card";
 
   //Increments currCardIdx state by 1
   function goForward() {
-    //TODO: if statement to fix infinity loop
+    // FIXES BUG 1
+    if (currCardIdx === (photos.length - 1)) {
+      setCurrCardIdx(0);
+    } else {
     setCurrCardIdx(currCardIdx + 1);
+    }
+  }
+  // FIXES BUG 2
+  function goBackward() {
+    if (currCardIdx === 0) {
+      setCurrCardIdx(photos.length - 1);
+    } else {
+      setCurrCardIdx(currCardIdx - 1);
+    }
   }
 
   return (
@@ -32,8 +44,7 @@ import Card from "./Card";
       <div className="Carousel-main">
         <i
           className="bi bi-arrow-left-circle"
-          //TODO: left arrow goBackward
-          onClick={goForward}
+          onClick={goBackward}
         />
         <Card
           caption={currCard.caption}
